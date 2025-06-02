@@ -11,5 +11,6 @@ public class AppButtonMouseListenerTest {
 		Button button = new Button(250, 100, 50, 50);
 		window.add(button);
 		window.addMouseListener(button.mouseListener());
+		window.addMouseMotionListener(button.mouseMotionListener());
 	}
 }

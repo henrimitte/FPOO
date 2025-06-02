@@ -1,18 +1,23 @@
 package ticTacToe.component;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import ticTacToe.gui.Paintable;
 import ticTacToe.gui.util.MouseListenerAdapter;
+import ticTacToe.gui.util.MouseMotionAdapter;
 
 public class Button implements Paintable {
 
 	private Point position = null;
 	private Dimension dimension = null;
+
+	private boolean mouseOver = false;
 
 	public Button() {
 		this.position = new Point(0, 0);
@@ -59,7 +64,8 @@ public class Button implements Paintable {
 		int xRight = xLeft + this.width();
 		int yBottom = yTop + this.height();
 
-		return ((point.x > xLeft && point.x < xRight) && (point.y > yTop && point.y < yBottom));
+		return ((point.x > xLeft && point.x < xRight) &&
+				(point.y > yTop && point.y < yBottom));
 	}
 
 	public MouseListener mouseListener() {
@@ -78,13 +84,34 @@ public class Button implements Paintable {
 		};
 	}
 
+	public MouseMotionListener mouseMotionListener() {
+
+		return new MouseMotionAdapter() {
+
+			@Override
+			public void mouseMoved(MouseEvent me) {
+				mouseOver = isOver(me.getPoint());
+			}
+		};
+	}
+
 	@Override
 	public void paint(Graphics g) {
 		int xLeft = this.position.x;
 		int yTop = this.position.y;
 		int width = this.width();
 		int height = this.height();
+		int offset = 2;
+		int doubleOffset = offset * 2;
+		Color buttonColor = g.getColor();
 
+		if (this.mouseOver) {
+			g.setColor(Color.red);
+			g.drawRect(xLeft + offset, yTop + offset,
+					   width - doubleOffset, height - doubleOffset);
+		}
+
+		g.setColor(buttonColor);
 		g.drawRect(xLeft, yTop, width, height);
 	}
 }
