@@ -1,117 +1,41 @@
 package ticTacToe.component;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
-import ticTacToe.gui.Paintable;
-import ticTacToe.gui.util.MouseListenerAdapter;
-import ticTacToe.gui.util.MouseMotionAdapter;
-
-public class Button implements Paintable {
-
-	private Point position = null;
-	private Dimension dimension = null;
-
-	private boolean mouseOver = false;
+public class Button extends AbstractComponent {
 
 	public Button() {
-		this.position = new Point(0, 0);
-		this.dimension = new Dimension(20, 20);
+		super();
 	}
 
 	public Button(int x, int y) {
-		this();
-		this.setPosition(x, y);
+		super(x, y);
 	}
 
 	public Button(int x, int y, int width, int height) {
-		this(x, y);
-		this.setSize(width, height);
+		super(x, y, width, height);
 	}
 
-	public void setPosition(int x, int y) {
-		this.position = new Point(x, y);
-	}
+	private void doMouseOverDecoration(Graphics g) {
 
-	public Point getPosition() {
-		return new Point(this.position);
-	}
+		Color defaultColor = g.getColor();
+		int offset = 2;
+		int doubleOffset = offset * 2;
 
-	public void setSize(int width, int height) {
-		this.dimension = new Dimension(width, height);
-	}
+		g.setColor(Color.red);
+		g.drawRect(position.x + offset, position.y + offset,
+				width() - doubleOffset, height() - doubleOffset);
 
-	public Dimension getSize() {
-		return new Dimension(this.dimension);
-	}
+		g.setColor(defaultColor);
 
-	public int width() {
-		return this.dimension.width;
-	}
-
-	public int height() {
-		return this.dimension.height;
-	}
-
-	public boolean isOver(Point point) {
-		int xLeft = this.position.x;
-		int yTop = this.position.y;
-		int xRight = xLeft + this.width();
-		int yBottom = yTop + this.height();
-
-		return ((point.x > xLeft && point.x < xRight) &&
-				(point.y > yTop && point.y < yBottom));
-	}
-
-	public MouseListener mouseListener() {
-
-		return new MouseListenerAdapter() {
-
-			@Override
-			public void mouseClicked(MouseEvent me) {
-
-				if (!isOver(me.getPoint()))
-					return;
-
-				System.out.println("alouuu!");
-			}
-
-		};
-	}
-
-	public MouseMotionListener mouseMotionListener() {
-
-		return new MouseMotionAdapter() {
-
-			@Override
-			public void mouseMoved(MouseEvent me) {
-				mouseOver = isOver(me.getPoint());
-			}
-		};
 	}
 
 	@Override
 	public void paint(Graphics g) {
-		int xLeft = this.position.x;
-		int yTop = this.position.y;
-		int width = this.width();
-		int height = this.height();
-		int offset = 2;
-		int doubleOffset = offset * 2;
-		Color buttonColor = g.getColor();
+		g.drawRect(position.x, position.y, width(), height());
 
-		if (this.mouseOver) {
-			g.setColor(Color.red);
-			g.drawRect(xLeft + offset, yTop + offset,
-					   width - doubleOffset, height - doubleOffset);
-		}
-
-		g.setColor(buttonColor);
-		g.drawRect(xLeft, yTop, width, height);
+		if (this.mouseOver)
+			doMouseOverDecoration(g);
 	}
 }
