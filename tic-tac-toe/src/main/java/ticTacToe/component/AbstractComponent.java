@@ -62,8 +62,7 @@ public abstract class AbstractComponent implements Paintable {
 		int xRight = xLeft + this.width();
 		int yBottom = yTop + this.height();
 
-		return ((point.x > xLeft && point.x < xRight)
-				&& (point.y > yTop && point.y < yBottom));
+		return ((point.x > xLeft && point.x < xRight) && (point.y > yTop && point.y < yBottom));
 	}
 
 	public MouseListener mouseListener() {
@@ -76,7 +75,7 @@ public abstract class AbstractComponent implements Paintable {
 				if (!isOver(me.getPoint()))
 					return;
 
-				System.out.println("alouuu!");
+				onMouseClick(me);
 			}
 
 		};
@@ -91,5 +90,9 @@ public abstract class AbstractComponent implements Paintable {
 				mouseOver = isOver(me.getPoint());
 			}
 		};
+	}
+
+	protected void onMouseClick(MouseEvent me) {
+		// do nothing
 	}
 }
