@@ -42,8 +42,8 @@ public class TableView extends AbstractComponent {
 		for (int lin = 0; lin < table.length; lin++)
 			for (int col = 0; col < table[lin].length; col++) {
 
-				int x = 5 + (lin * (cellHeight + 5));
-				int y = 5 + (col * (cellWidth + 5));
+				int x = position.x + 5 + (lin * (cellHeight + 5));
+				int y = position.y + 5 + (col * (cellWidth + 5));
 
 				table[lin][col] = new ImageButton(x, y, cellWidth, cellHeight, null);
 			}
@@ -82,13 +82,10 @@ public class TableView extends AbstractComponent {
 	public void paint(Graphics g) {
 
 		if (icon == null)
-			return;
+			throw new RuntimeException("Error: icon is null at TableView!");
 
-		int xLeft = position.x;
-		int yTop = position.y;
-		int width = dimension.width;
-		int height = dimension.height;
+		g.drawImage(icon.getImage(), position.x, position.y, width(), height(), null);
 
-		g.drawImage(icon.getImage(), xLeft, yTop, width, height, null);
+		paintChildren(g);
 	}
 }
