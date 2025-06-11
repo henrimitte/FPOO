@@ -1,29 +1,25 @@
 package appTest;
 
-import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
 
-import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 import ticTacToe.component.button.ImageButton;
 import ticTacToe.gui.MainWindow;
 
 public class AppImageButtonTest {
 
-	static Image loadImage(String imagePath) throws IOException {
-		URL url = AppImageButtonTest.class.getResource(imagePath);
-		return ImageIO.read(url);
-	}
-
 	public static void main(String[] args) throws IOException {
 		String path = "../ticTacToe/images/";
+		URL url = AppImageButtonTest.class.getResource(path + "markO.png");
+		ImageIcon icon = new ImageIcon(url); 
 
-		Image buttonImage = loadImage(path + "tic-tac-toe.png");
-
+		ImageButton button = new ImageButton(100, 100, 50, 50, icon);
+		
 		MainWindow window = new MainWindow();
-		ImageButton imageButton = new ImageButton(50, 50, 200, 200);
-		imageButton.setImage(buttonImage);
-		window.add(imageButton);
+		window.add(button);
+		window.addMouseListener(button.mouseListener());
+		window.addMouseMotionListener(button.mouseMotionListener());
 	}
 }

@@ -42,7 +42,7 @@ public class Button extends AbstractComponent {
 		this.buttonClickListeners.forEach(listener -> listener.onClick(event));
 	}
 
-	private void doMouseOverDecoration(Graphics g) {
+	protected void doMouseOverDecoration(Graphics g) {
 
 		Color defaultColor = g.getColor();
 		int offset = 2;
