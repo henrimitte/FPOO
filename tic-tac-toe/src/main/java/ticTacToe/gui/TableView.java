@@ -2,10 +2,15 @@ package ticTacToe.gui;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 
 import model.Mark;
+import model.table.CellClickEvent;
+import model.table.CellClickListener;
 import model.table.ReadOnlyTableModel;
 import ticTacToe.component.AbstractComponent;
 import ticTacToe.component.button.ImageButton;
@@ -16,6 +21,8 @@ public class TableView extends AbstractComponent {
 	private ImageIcon iconX, iconO;
 	private ImageButton[][] table = new ImageButton[3][3];
 	private ReadOnlyTableModel tableModel;
+
+	List<CellClickListener> cellClickListeners = new ArrayList<>();
 
 	public TableView() {
 		super();
@@ -47,6 +54,19 @@ public class TableView extends AbstractComponent {
 
 				table[lin][col] = new ImageButton(x, y, cellWidth, cellHeight, null);
 			}
+	}
+
+	public void addCellClickListener(CellClickListener listener) {
+		cellClickListeners.add(listener);
+	}
+
+	public void removeCellClickListener(CellClickListener listener) {
+		cellClickListeners.remove(listener);
+	}
+
+	private void dispatchCellClickEvent(int lin, int col) {
+		CellClickEvent event = new CellClickEvent(lin, col);
+		cellClickListeners.forEach(listener -> listener.onClick(event));
 	}
 
 	public void setIconX(ImageIcon icon) {
@@ -87,5 +107,24 @@ public class TableView extends AbstractComponent {
 		g.drawImage(icon.getImage(), position.x, position.y, width(), height(), null);
 
 		paintChildren(g);
+	}
+
+	@Override
+	protected void onMouseClick(MouseEvent me) {
+
+		for (int lin = 0; lin < table.length; lin++)
+			for (int col = 0; col < table[lin].length; col++)
+
+				if (table[lin][col].isOver(me.getPoint()))
+					dispatchCellClickEvent(lin, col);
+	}
+
+	@Override
+	protected void onMouseMove(MouseEvent me) {
+
+		for (int lin = 0; lin < table.length; lin++)
+			for (int col = 0; col < table[lin].length; col++)
+
+				table[lin][col].mouseMotionListener().mouseMoved(me);
 	}
 }

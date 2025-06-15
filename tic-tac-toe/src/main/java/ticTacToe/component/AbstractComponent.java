@@ -88,11 +88,16 @@ public abstract class AbstractComponent implements Paintable {
 			@Override
 			public void mouseMoved(MouseEvent me) {
 				mouseOver = isOver(me.getPoint());
+				onMouseMove(me);
 			}
 		};
 	}
 
 	protected void onMouseClick(MouseEvent me) {
-		// do nothing
+		/** The standard behavior is to do absolutely nothing */
+	}
+
+	protected void onMouseMove(MouseEvent me) {
+		/** The standard behavior is to do absolutely nothing */
 	}
 }

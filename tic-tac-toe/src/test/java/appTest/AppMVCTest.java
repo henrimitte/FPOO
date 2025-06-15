@@ -10,26 +10,28 @@ import model.table.TableModel;
 import ticTacToe.gui.MainWindow;
 import ticTacToe.gui.TableView;
 
-public class AppTableModelTableViewTest {
+public class AppMVCTest {
 
 	TableModel tableModel = new SimpleTableModel();
 
 	MainWindow window = new MainWindow();
 	TableView tableView = createTableView();
 
-	public AppTableModelTableViewTest() {
+	public AppMVCTest() {
 		tableView.setTableModel(tableModel);
+		tableView.addCellClickListener(
+				(cell) -> tableModel.setMark(cell.lin, cell.col, Math.random() > 0.5 ? Mark.X : Mark.O));
 
 		ImageIcon icon = loadImage("background.jpg");
 		window.setBackground(icon);
 		window.add(tableView);
 
 		window.addMouseMotionListener(tableView.mouseMotionListener());
+		window.addMouseListener(tableView.mouseListener());
 	}
 
 	public static void main(String[] args) throws Exception {
-		AppTableModelTableViewTest app = new AppTableModelTableViewTest();
-		app.play();
+		AppMVCTest app = new AppMVCTest();
 	}
 
 	private TableView createTableView() {
@@ -49,26 +51,5 @@ public class AppTableModelTableViewTest {
 		String path = "../ticTacToe/images/";
 		URL url = getClass().getResource(path + filename);
 		return new ImageIcon(url);
-	}
-
-	private void play() throws Exception {
-		Thread.sleep(1000);
-		tableModel.setMark(1, 1, Mark.X);
-		Thread.sleep(1000);
-		tableModel.setMark(0, 0, Mark.O);
-		Thread.sleep(1000);
-		tableModel.setMark(0, 1, Mark.X);
-		Thread.sleep(1000);
-		tableModel.setMark(2, 1, Mark.O);
-		Thread.sleep(1000);
-		tableModel.setMark(2, 0, Mark.X);
-		Thread.sleep(1000);
-		tableModel.setMark(0, 2, Mark.O);
-		Thread.sleep(1000);
-		tableModel.setMark(1, 0, Mark.X);
-		Thread.sleep(1000);
-		tableModel.setMark(1, 2, Mark.O);
-		Thread.sleep(1000);
-		tableModel.setMark(2, 2, Mark.X);
 	}
 }
